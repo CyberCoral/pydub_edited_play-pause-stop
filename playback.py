@@ -60,8 +60,7 @@ def check_play_pause(t1):
         globals().update({"play_flag":2})
     
     print("Press ctrl+0 to stop.")
-    keyboard.unhook_all()
-    keyboard.add_hotkey("ctrl+0", change_globals())
+    #keyboard.add_hotkey("ctrl+0", change_globals())
 
 
     while t1.is_alive():  
