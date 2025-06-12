@@ -56,6 +56,7 @@ def check_play_pause(t1):
     global play_flag
     play_flag=1
     
+    global x
     x = None
     def change_globals():
         globals().update({"x":"e"})
