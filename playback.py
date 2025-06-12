@@ -66,6 +66,7 @@ def check_play_pause(t1):
 
     while t1.is_alive():  
         if play_flag == 2:
+            print("The thread is stopping.")
             break
         else:
             play_flag ^= 1
