@@ -9,7 +9,6 @@ import subprocess
 from tempfile import NamedTemporaryFile
 from .utils import get_player_name, make_chunks
 import threading
-import sys
 
 PLAYER = get_player_name()
 play_flag=1
@@ -50,15 +49,16 @@ def check_play_pause(t1):
     global play_flag
     play_flag=1
     while t1.is_alive():
-        x=input("space+Enter to play/pause and e+Enter to stop ")
-        if x=='e':
-            play_flag=2
+        try:
+            x= input("space+Enter to play/pause and e+Enter to stop ")
+        except EOFError:
+            x = "e"
+            
+        if x == 'e':
+            play_flag = 2
             break
         else:
-            if play_flag==0:
-                play_flag=1
-            elif play_flag==1:
-                play_flag=0
+            play_flag ^= 1
 
 
 def _play_with_simpleaudio(seg):
