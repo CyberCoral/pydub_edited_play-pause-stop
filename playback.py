@@ -56,19 +56,15 @@ def check_play_pause(t1):
     global play_flag
     play_flag=1
     
-    global x
-    x = None
     def change_globals():
-        globals().update({"x":"e"})
+        globals().update({"play_flag":2})
     
-    print("Press e+Enter to stop.")
-    keyboard.add_hotkey("e+Enter", change_globals())
+    print("Press ctrl+9+0 to stop.")
+    keyboard.add_hotkey("ctrl+9+0", change_globals())
 
 
     while t1.is_alive():  
-        keyboard.wait()          
-        if x == 'e':
-            play_flag = 2
+        if play_flag == 2:
             break
         else:
             play_flag ^= 1
