@@ -56,16 +56,18 @@ def check_play_pause(t1):
     global play_flag
     play_flag=1
     
-    def change_globals():
-        globals().update({"play_flag":2})
+    x = 0
+    
+    def change_locals(d):
+        d.update({"x":"exit"})
     
     print("Press ctrl+0 to stop.")
-    #keyboard.add_hotkey("ctrl+0", change_globals())
-
+    keyboard.unhook_all()
+    keyboard.add_hotkey("ctrl+0", change_locals, args=(locals(),))
 
     while t1.is_alive():  
-        if play_flag == 2:
-            print("The thread is stopping.")
+        if x == "exit":
+            play_flag = 2
             break
         else:
             play_flag ^= 1
