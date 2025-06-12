@@ -9,7 +9,13 @@ import subprocess
 from tempfile import NamedTemporaryFile
 from .utils import get_player_name, make_chunks
 import threading
-import sys
+
+import importlib, os
+if importlib.util.find_spec("keyboard") == None:
+    command = "".join(["python -m pip install keyboard"])
+    os.system(command)
+    
+import keyboard
 
 PLAYER = get_player_name()
 play_flag=1
@@ -32,7 +38,7 @@ def _play_with_pyaudio(seg):
                     rate=seg.frame_rate,
                     output=True)
     # break audio into half-second chunks (to allows keyboard interrupts)
-    for chunk in make_chunks(seg,500):
+    for chunk in make_chunks(seg,16):
         stream.write(chunk._data)
         if play_flag==2:
             break
@@ -49,16 +55,21 @@ def _play_with_pyaudio(seg):
 def check_play_pause(t1):
     global play_flag
     play_flag=1
-    while t1.is_alive():
-        x=input("space+Enter to play/pause and e+Enter to stop ")
-        if x=='e':
-            play_flag=2
+    
+    x = None
+    def change_globals():
+        globals().update({"x":"e"})
+    
+    print("Press e+Enter to stop.")
+    keyboard.add_hotkey("e+Enter", change_globals())
+
+
+    while t1.is_alive():            
+        if x == 'e':
+            play_flag = 2
             break
         else:
-            if play_flag==0:
-                play_flag=1
-            elif play_flag==1:
-                play_flag=0
+            play_flag ^= 1
 
 
 def _play_with_simpleaudio(seg):
