@@ -38,7 +38,7 @@ def _play_with_pyaudio(seg):
                     rate=seg.frame_rate,
                     output=True)
     # break audio into half-second chunks (to allows keyboard interrupts)
-    for chunk in make_chunks(seg,500):
+    for chunk in make_chunks(seg,800):
         stream.write(chunk._data)
         if play_flag==2:
             break
@@ -64,7 +64,8 @@ def check_play_pause(t1):
     keyboard.add_hotkey("e+Enter", change_globals())
 
 
-    while t1.is_alive():            
+    while t1.is_alive():  
+        keyboard.wait()          
         if x == 'e':
             play_flag = 2
             break
