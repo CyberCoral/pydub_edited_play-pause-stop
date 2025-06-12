@@ -32,7 +32,7 @@ def _play_with_pyaudio(seg):
                     rate=seg.frame_rate,
                     output=True)
     # break audio into half-second chunks (to allows keyboard interrupts)
-    for chunk in make_chunks(seg,500):
+    for chunk in make_chunks(seg,16):
         stream.write(chunk._data)
         if play_flag==2:
             break
