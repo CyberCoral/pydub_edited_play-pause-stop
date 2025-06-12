@@ -10,6 +10,13 @@ from tempfile import NamedTemporaryFile
 from .utils import get_player_name, make_chunks
 import threading
 
+import importlib, os
+if importlib.util.find_spec("keyboard") == None:
+    command = "".join(["python -m pip install keyboard"])
+    os.system(command)
+    
+import keyboard
+
 PLAYER = get_player_name()
 play_flag=1
 
@@ -48,12 +55,16 @@ def _play_with_pyaudio(seg):
 def check_play_pause(t1):
     global play_flag
     play_flag=1
-    while t1.is_alive():
-        try:
-            x= input("space+Enter to play/pause and e+Enter to stop ")
-        except EOFError:
-            x = "e"
-            
+    
+    x = None
+    def change_globals():
+        globals().update({"x":"e"})
+    
+    print("Press e+Enter to stop.")
+    keyboard.add_hotkey("e+Enter", change_globals())
+
+
+    while t1.is_alive():            
         if x == 'e':
             play_flag = 2
             break
